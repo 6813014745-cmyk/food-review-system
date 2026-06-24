@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Review System</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Food Review System</p>
+          <h1>ระบบรีวิวอาหารที่เรียบง่าย ใช้งานง่าย และรองรับทุกอุปกรณ์</h1>
+          <p class="hero-copy">
+            จัดการเมนูอาหาร เพิ่มรีวิว พร้อมคำนวณคะแนนเฉลี่ยอัตโนมัติผ่าน API และฐานข้อมูล MySQL
+          </p>
+        </div>
+        <div class="hero-card">
+          <div class="stat">
+            <span id="menuCount">0</span>
+            <label>เมนูทั้งหมด</label>
+          </div>
+          <div class="stat">
+            <span id="reviewCount">0</span>
+            <label>รีวิวทั้งหมด</label>
+          </div>
+          <div class="stat">
+            <span id="overallAverage">0.00</span>
+            <label>คะแนนเฉลี่ยรวม</label>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>รายการเมนูอาหาร</h2>
+              <p>เพิ่ม แก้ไข ลบ และเลือกเมนูเพื่อรีวิว</p>
+            </div>
+            <button class="primary" id="addMenuButton">เพิ่มเมนู</button>
+          </div>
+          <div id="menuList" class="menu-list"></div>
+        </section>
+
+        <section class="panel detail-panel">
+          <div class="panel-header">
+            <div>
+              <h2>รายละเอียดและรีวิว</h2>
+              <p>เลือกเมนูจากรายการด้านซ้ายเพื่อดูรีวิวทั้งหมด</p>
+            </div>
+          </div>
+          <div id="detailEmptyState" class="empty-state">
+            <h3>ยังไม่มีเมนูที่เลือก</h3>
+            <p>คลิกที่เมนูหนึ่งรายการเพื่อดูคะแนนเฉลี่ยและส่งรีวิวใหม่</p>
+          </div>
+
+          <div id="detailView" class="detail-view hidden">
+            <div class="detail-summary">
+              <div>
+                <p class="detail-category" id="detailCategory"></p>
+                <h3 id="detailName"></h3>
+                <p id="detailDescription"></p>
+              </div>
+              <div class="rating-badge">
+                <span id="detailAverage">0.00</span>
+                <label>คะแนนเฉลี่ย</label>
+              </div>
+            </div>
+
+            <div class="review-form-card">
+              <div class="review-form-header">
+                <h3>ให้คะแนนเมนูนี้</h3>
+                <p>ทุกหัวข้อใช้คะแนน 1-5</p>
+              </div>
+              <form id="reviewForm" class="review-form"></form>
+            </div>
+
+            <div class="review-summary">
+              <h3>คะแนนรายหัวข้อจากรีวิวล่าสุด</h3>
+              <div id="scoreBreakdown" class="score-breakdown"></div>
+            </div>
+
+            <div class="review-list-card">
+              <div class="review-list-header">
+                <h3>รีวิวทั้งหมด</h3>
+                <p id="reviewMeta"></p>
+              </div>
+              <div id="reviewList" class="review-list"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="menuDialog" class="dialog">
+      <form id="menuForm" class="dialog-form">
+        <div class="dialog-header">
+          <h3 id="menuFormTitle">เพิ่มเมนู</h3>
+          <button type="button" class="ghost" id="closeMenuDialog">ปิด</button>
+        </div>
+        <input type="hidden" id="menuId" />
+        <label>
+          ชื่อเมนู
+          <input id="menuName" type="text" placeholder="เช่น ข้าวผัดกุ้ง" list="menuNameSuggestions" required />
+        </label>
+        <label>
+          ประเภท
+          <input id="menuCategory" type="text" placeholder="เช่น อาหารจานเดียว" list="menuCategorySuggestions" />
+        </label>
+        <label>
+          รายละเอียด
+          <textarea id="menuDescription" rows="4" placeholder="รายละเอียดเมนู"></textarea>
+        </label>
+        <div class="template-panel">
+          <div class="template-panel-header">
+            <strong>ตัวอย่างเมนู</strong>
+            <span>แตะเพื่อเติมข้อมูลอัตโนมัติ</span>
+          </div>
+          <div id="templateChips" class="template-chips"></div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="ghost" id="cancelMenuButton">ยกเลิก</button>
+          <button type="submit" class="primary">บันทึก</button>
+        </div>
+      </form>
+    </dialog>
+
+    <datalist id="menuNameSuggestions"></datalist>
+    <datalist id="menuCategorySuggestions"></datalist>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
